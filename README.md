@@ -1,6 +1,10 @@
 <!-- Plugin description -->
 # Trailing Spaces
 
+highlight trailing spaces and delete them in a flash!
+
+This plugin is inspired by the [Trailing Space](https://github.com/shardulm94/vscode-trailingspaces) extension for Visual Studio Code and the [Trailing Space](https://github.com/SublimeText/TrailingSpaces) for Sublime Text.
+
 ## Synopsis
 
 Jetbrains provides a way to automate deletion of trailing spaces in setting. Depending on your settings, it may be more handy to just highlight them and/or delete them by hand, at any time. This plugin provides just that, and a lot of options to fine-tune the way you want to decimate trailing spaces.
