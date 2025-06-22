@@ -2,7 +2,7 @@
 
 All notable changes to the Trailing Spaces plugin will be documented in this file.
 
-## [Unreleased]
+## [0.0.1]
 
 ### Added
 - **Real-time highlighting** of trailing spaces in all open documents
