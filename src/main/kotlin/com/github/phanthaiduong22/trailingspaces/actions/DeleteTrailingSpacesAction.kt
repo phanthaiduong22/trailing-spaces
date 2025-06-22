@@ -4,6 +4,7 @@ import com.github.phanthaiduong22.trailingspaces.config.PluginConfig
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.diagnostic.thisLogger
@@ -16,6 +17,10 @@ import java.util.regex.Pattern
 class DeleteTrailingSpacesAction : AnAction() {
     
     private val trailingSpacePattern = Pattern.compile(PluginConfig.TRAILING_SPACE_PATTERN, PluginConfig.PATTERN_FLAGS)
+    
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.EDT
+    }
     
     override fun actionPerformed(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
