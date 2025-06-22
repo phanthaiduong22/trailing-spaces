@@ -50,4 +50,11 @@ This is the master toggle for all trailing space highlighting. When disabled, no
 Highlighting of trailing spaces in the currently edited line can be annoying: each time you are about to start a new word, the space you type is matched as trailing spaces. The currently edited line can thus be ignored by disabling this option.
 
 When this setting is disabled, trailing spaces in the line being edited will not be highlighted (only effective when "Enable Highlighting" is also enabled).
+
+### Trim On Save
+**Default: false**
+
+Setting this to true will ensure trailing spaces are deleted when you save your document. This feature works independently of the highlighting settings - trailing spaces will be removed on save even if highlighting is disabled.
+
+When enabled, all trailing spaces in the document are automatically removed every time you save the file.
 <!-- Plugin description end -->

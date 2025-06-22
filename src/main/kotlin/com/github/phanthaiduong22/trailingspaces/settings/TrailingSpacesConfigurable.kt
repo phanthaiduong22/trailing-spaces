@@ -34,6 +34,13 @@ class TrailingSpacesConfigurable : Configurable {
                                 "(useful to avoid distracting highlights while typing), but they can still be deleted using the delete command.")
                 }
             }
+            group("Automatic Actions") {
+                row {
+                    checkBox("Trim on save")
+                        .bindSelected(settings::trimOnSave)
+                        .comment("When enabled, trailing spaces will be automatically deleted when you save a document.")
+                }
+            }
         }
         
         settingsComponent = panel

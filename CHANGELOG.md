@@ -23,4 +23,6 @@ All notable changes to the Trailing Spaces plugin will be documented in this fil
 - **Highlight Current Line setting** (default: enabled)
   - When enabled: Always highlight trailing spaces in the currently edited line
   - When disabled: Skip highlighting in the current line to avoid distraction while typing
+- **Trim On Save setting** (default: disabled)
+  - When enabled: Automatically deletes all trailing spaces when saving a document
 - **Smart highlighting logic** with debounced updates for performance

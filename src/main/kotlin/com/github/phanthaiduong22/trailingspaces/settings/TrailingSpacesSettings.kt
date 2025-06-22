@@ -23,7 +23,8 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
     
     data class State(
         var highlightCurrentLine: Boolean = true,
-        var highlightingEnabled: Boolean = true
+        var highlightingEnabled: Boolean = true,
+        var trimOnSave: Boolean = false
     )
     
     override fun getState(): State = state
@@ -48,6 +49,15 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
         get() = state.highlightingEnabled
         set(value) {
             state.highlightingEnabled = value
+        }
+
+    /**
+     * Whether to automatically trim trailing spaces on save
+     */
+    var trimOnSave: Boolean
+        get() = state.trimOnSave
+        set(value) {
+            state.trimOnSave = value
         }
     
     companion object {
