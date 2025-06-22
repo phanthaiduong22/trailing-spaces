@@ -19,3 +19,16 @@ The main feature you gain from using this plugin is that of deleting all trailin
 3. **Menu**: Access the action from the "Edit" menu where "Trailing Spaces: Delete" is available
 
 With these options, you can quickly delete all trailing spaces in your current document whenever needed!
+
+## Settings
+
+Several options are available to customize the plugin's behavior. Those settings are stored persistently and applied globally to all opened documents.
+
+To access the settings: Go to **"File / Settings / Tools / Trailing Spaces"** (or **"IntelliJ IDEA / Preferences / Tools / Trailing Spaces"** on Mac).
+
+### Highlight Current Line
+**Default: true**
+
+Highlighting of trailing spaces in the currently edited line can be annoying: each time you are about to start a new word, the space you type is matched as trailing spaces. The currently edited line can thus be ignored by disabling this option.
+
+When this setting is disabled, trailing spaces in the line being edited will not be highlighted, but they are still internally detected and will be deleted when using the deletion command. If you are editing multiple lines (using multiple cursors), all such lines will be ignored.

@@ -1,5 +1,7 @@
 package com.github.phanthaiduong22.trailingspaces.startup
 
+import com.github.phanthaiduong22.trailingspaces.config.PluginConfig
+import com.github.phanthaiduong22.trailingspaces.settings.TrailingSpacesSettings
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
@@ -21,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 
 class TrailingSpacesActivity : ProjectActivity {
-    private val trailingSpacePattern = Pattern.compile("[ \\t]+$", Pattern.MULTILINE)
+    private val trailingSpacePattern = Pattern.compile(PluginConfig.TRAILING_SPACE_PATTERN, PluginConfig.PATTERN_FLAGS)
     private val highlighters = mutableMapOf<Editor, MutableList<RangeHighlighter>>()
     private val debounceJobs = ConcurrentHashMap<Editor, Job>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -88,7 +90,7 @@ class TrailingSpacesActivity : ProjectActivity {
         
         // Start new debounced job
         val job = coroutineScope.launch {
-            delay(500) // 500ms debounce
+            delay(PluginConfig.HIGHLIGHTING_DEBOUNCE_DELAY_MS)
             highlightTrailingSpaces(editor)
         }
         
@@ -102,6 +104,7 @@ class TrailingSpacesActivity : ProjectActivity {
         val document = editor.document
         val text = document.text
         val markupModel = editor.markupModel
+        val settings = TrailingSpacesSettings.getInstance()
 
         // Get current caret position
         val caretModel = editor.caretModel
@@ -130,17 +133,20 @@ class TrailingSpacesActivity : ProjectActivity {
             val endOffset = matcher.end()
             val matchLine = document.getLineNumber(startOffset)
 
-            // Skip highlighting if caret is at the end of this line with trailing spaces
-            if (isCaretAtEndWithTrailingSpaces && matchLine == caretLine) {
+            // Skip highlighting based on settings
+            if (!settings.highlightCurrentLine && matchLine == caretLine) {
+                // When highlightCurrentLine is false, skip the entire current line
                 continue
             }
+
+            // When highlightCurrentLine is true, always highlight (no special current line logic)
 
             // Add highlighter for trailing spaces
             val highlighter =
                 markupModel.addRangeHighlighter(
                     startOffset,
                     endOffset,
-                    HighlighterLayer.WARNING,
+                    PluginConfig.HIGHLIGHTER_LAYER,
                     textAttributes,
                     HighlighterTargetArea.EXACT_RANGE,
                 )
@@ -151,7 +157,7 @@ class TrailingSpacesActivity : ProjectActivity {
         // Store highlighters for this editor
         highlighters[editor] = editorHighlighters
 
-        thisLogger().debug("Added ${editorHighlighters.size} trailing space highlights")
+        thisLogger().debug("Added ${editorHighlighters.size} trailing space highlights (highlightCurrentLine: ${settings.highlightCurrentLine})")
     }
 
     private fun clearHighlighters(editor: Editor) {

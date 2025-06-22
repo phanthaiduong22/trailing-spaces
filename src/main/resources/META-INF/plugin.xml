@@ -8,6 +8,10 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.github.phanthaiduong22.trailingspaces.startup.TrailingSpacesActivity" />
+        <applicationConfigurable parentId="tools" instance="com.github.phanthaiduong22.trailingspaces.settings.TrailingSpacesConfigurable" 
+                                id="com.github.phanthaiduong22.trailingspaces.settings.TrailingSpacesConfigurable" 
+                                displayName="Trailing Spaces"/>
+        <applicationService serviceImplementation="com.github.phanthaiduong22.trailingspaces.settings.TrailingSpacesSettings"/>
     </extensions>
 
     <actions>
