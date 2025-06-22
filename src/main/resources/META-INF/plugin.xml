@@ -9,4 +9,14 @@
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.github.phanthaiduong22.trailingspaces.startup.TrailingSpacesActivity" />
     </extensions>
+
+    <actions>
+        <action id="trailing-spaces.deleteTrailingSpaces"
+                class="com.github.phanthaiduong22.trailingspaces.actions.DeleteTrailingSpacesAction"
+                text="Trailing Spaces: Delete"
+                description="Delete all trailing spaces in the current document">
+            <add-to-group group-id="EditMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift T"/>
+        </action>
+    </actions>
 </idea-plugin>
