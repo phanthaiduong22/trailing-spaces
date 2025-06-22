@@ -17,6 +17,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.ui.JBColor
 import kotlinx.coroutines.*
@@ -62,56 +63,58 @@ class TrailingSpacesActivity : ProjectActivity {
     fun highlightTrailingSpaces(editor: Editor) {
         clearHighlighters(editor)
 
-        val document = editor.document
-        val text = document.text
-        val markupModel = editor.markupModel
         val settings = TrailingSpacesSettings.getInstance()
-
         if (!settings.highlightingEnabled) {
             return
         }
 
-        val caretModel = editor.caretModel
-        val caretOffset = caretModel.offset
-        val caretLine = document.getLineNumber(caretOffset)
+        ReadAction.run<RuntimeException> {
+            val document = editor.document
+            val text = document.text
+            val markupModel = editor.markupModel
 
-        val textAttributes =
-            TextAttributes().apply {
-                backgroundColor = parseHexColor(settings.highlightColor)
-                foregroundColor = JBColor.WHITE
+            val caretModel = editor.caretModel
+            val caretOffset = caretModel.offset
+            val caretLine = document.getLineNumber(caretOffset)
+
+            val textAttributes =
+                TextAttributes().apply {
+                    backgroundColor = parseHexColor(settings.highlightColor)
+                    foregroundColor = JBColor.WHITE
+                }
+
+            val matcher = trailingSpacePattern.matcher(text)
+            val editorHighlighters = mutableListOf<RangeHighlighter>()
+
+            while (matcher.find()) {
+                val startOffset = matcher.start()
+                val endOffset = matcher.end()
+                val matchLine = document.getLineNumber(startOffset)
+
+                // Skip highlighting based on settings
+                if (!settings.highlightCurrentLine && matchLine == caretLine) {
+                    // When highlightCurrentLine is false, skip the entire current line
+                    continue
+                }
+
+                val highlighter =
+                    markupModel.addRangeHighlighter(
+                        startOffset,
+                        endOffset,
+                        PluginConfig.HIGHLIGHTER_LAYER,
+                        textAttributes,
+                        HighlighterTargetArea.EXACT_RANGE,
+                    )
+
+                editorHighlighters.add(highlighter)
             }
 
-        val matcher = trailingSpacePattern.matcher(text)
-        val editorHighlighters = mutableListOf<RangeHighlighter>()
+            highlighters[editor] = editorHighlighters
 
-        while (matcher.find()) {
-            val startOffset = matcher.start()
-            val endOffset = matcher.end()
-            val matchLine = document.getLineNumber(startOffset)
-
-            // Skip highlighting based on settings
-            if (!settings.highlightCurrentLine && matchLine == caretLine) {
-                // When highlightCurrentLine is false, skip the entire current line
-                continue
-            }
-
-            val highlighter =
-                markupModel.addRangeHighlighter(
-                    startOffset,
-                    endOffset,
-                    PluginConfig.HIGHLIGHTER_LAYER,
-                    textAttributes,
-                    HighlighterTargetArea.EXACT_RANGE,
-                )
-
-            editorHighlighters.add(highlighter)
+            thisLogger().debug(
+                "Added ${editorHighlighters.size} trailing space highlights (highlightCurrentLine: ${settings.highlightCurrentLine})",
+            )
         }
-
-        highlighters[editor] = editorHighlighters
-
-        thisLogger().debug(
-            "Added ${editorHighlighters.size} trailing space highlights (highlightCurrentLine: ${settings.highlightCurrentLine})",
-        )
     }
 
     fun clearHighlighters(editor: Editor) {
@@ -131,24 +134,28 @@ class TrailingSpacesActivity : ProjectActivity {
     }
 
     fun deleteTrailingSpaces(document: Document, projectName: String) {
-        val text = document.text
-        val matcher = trailingSpacePattern.matcher(text)
-
-        if (!matcher.find()) {
-            thisLogger().debug("No trailing spaces found in document")
-            return
+        val replacements = ReadAction.compute<List<Pair<Int, Int>>, RuntimeException> {
+            val text = document.text
+            val matcher = trailingSpacePattern.matcher(text)
+            
+            if (!matcher.find()) {
+                thisLogger().debug("No trailing spaces found in document")
+                return@compute emptyList()
+            }
+            
+            // Reset matcher to find all matches
+            matcher.reset()
+            val replacementsList = mutableListOf<Pair<Int, Int>>()
+            
+            while (matcher.find()) {
+                replacementsList.add(Pair(matcher.start(), matcher.end()))
+            }
+            
+            replacementsList
         }
-
-        // Reset matcher to find all matches
-        matcher.reset()
-        val replacements = mutableListOf<Pair<Int, Int>>()
-
-        while (matcher.find()) {
-            replacements.add(Pair(matcher.start(), matcher.end()))
-        }
-
+        
         if (replacements.isEmpty()) return
-
+        
         // Perform the deletion in a write action with command grouping
         WriteAction.run<RuntimeException> {
             CommandProcessor.getInstance().runUndoTransparentAction {
@@ -158,7 +165,7 @@ class TrailingSpacesActivity : ProjectActivity {
                 }
             }
         }
-
+        
         val deletedCount = replacements.size
         thisLogger().info("Deleted $deletedCount trailing space occurrences on save in project: $projectName")
     }
