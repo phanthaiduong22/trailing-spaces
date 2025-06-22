@@ -133,7 +133,7 @@ jobs:
   inspectCode:
     name: Inspect code
     needs: [ build ]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       checks: write
