@@ -11,24 +11,24 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.TextEditor
 
 class ToggleTrailingSpacesAction : AnAction() {
-    
+
     override fun getActionUpdateThread(): ActionUpdateThread {
         return ActionUpdateThread.EDT
     }
-    
+
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
         val settings = TrailingSpacesSettings.getInstance()
-        
+
         settings.highlightingEnabled = !settings.highlightingEnabled
-        
+
         thisLogger().info("Trailing spaces highlighting ${if (settings.highlightingEnabled) "enabled" else "disabled"}")
-        
+
         val editors = FileEditorManager.getInstance(project)
             .allEditors
             .filterIsInstance<TextEditor>()
             .map { it.editor }
-        
+
         editors.forEach { editor ->
             if (settings.highlightingEnabled) {
                 editor.project?.let { project ->
@@ -40,11 +40,11 @@ class ToggleTrailingSpacesAction : AnAction() {
             }
         }
     }
-    
+
     override fun update(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
         e.presentation.isEnabledAndVisible = editor != null
-        
+
         val settings = TrailingSpacesSettings.getInstance()
         e.presentation.text = if (settings.highlightingEnabled) {
             "Trailing Spaces: Disable Highlighting"
@@ -52,7 +52,7 @@ class ToggleTrailingSpacesAction : AnAction() {
             "Trailing Spaces: Enable Highlighting"
         }
     }
-    
+
     private fun clearHighlighters(editor: com.intellij.openapi.editor.Editor) {
         val markupModel = editor.markupModel
         markupModel.allHighlighters.forEach { highlighter ->
@@ -61,4 +61,4 @@ class ToggleTrailingSpacesAction : AnAction() {
             }
         }
     }
-} 
+}

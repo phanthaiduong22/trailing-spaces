@@ -9,7 +9,7 @@ class TrailingSpacesEditorFactoryListener(
     private val project: Project,
     private val activity: TrailingSpacesActivity
 ) : EditorFactoryListener {
-    
+
     override fun editorCreated(event: EditorFactoryEvent) {
         val editor = event.editor
         if (editor.project == project) {
@@ -22,4 +22,4 @@ class TrailingSpacesEditorFactoryListener(
         activity.cancelDebounceJob(editor)
         activity.clearHighlighters(editor)
     }
-} 
+}

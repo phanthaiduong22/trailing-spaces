@@ -133,22 +133,22 @@ class TrailingSpacesActivity : ProjectActivity {
     fun deleteTrailingSpaces(document: Document, projectName: String) {
         val text = document.text
         val matcher = trailingSpacePattern.matcher(text)
-        
+
         if (!matcher.find()) {
             thisLogger().debug("No trailing spaces found in document")
             return
         }
-        
+
         // Reset matcher to find all matches
         matcher.reset()
         val replacements = mutableListOf<Pair<Int, Int>>()
-        
+
         while (matcher.find()) {
             replacements.add(Pair(matcher.start(), matcher.end()))
         }
-        
+
         if (replacements.isEmpty()) return
-        
+
         // Perform the deletion in a write action with command grouping
         WriteAction.run<RuntimeException> {
             CommandProcessor.getInstance().runUndoTransparentAction {
@@ -158,11 +158,11 @@ class TrailingSpacesActivity : ProjectActivity {
                 }
             }
         }
-        
+
         val deletedCount = replacements.size
         thisLogger().info("Deleted $deletedCount trailing space occurrences on save in project: $projectName")
     }
-    
+
     private fun parseHexColor(hexColor: String): Color {
         return try {
             val hex = if (hexColor.startsWith("#")) hexColor.substring(1) else hexColor

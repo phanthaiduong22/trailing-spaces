@@ -18,22 +18,22 @@ import com.intellij.util.xmlb.XmlSerializerUtil
     storages = [Storage(PluginConfig.SETTINGS_STORAGE_FILE)]
 )
 class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.State> {
-    
+
     private var state = State()
-    
+
     data class State(
         var highlightCurrentLine: Boolean = true,
         var highlightingEnabled: Boolean = true,
         var trimOnSave: Boolean = false,
         var highlightColor: String = PluginConfig.DEFAULT_HIGHLIGHT_COLOR
     )
-    
+
     override fun getState(): State = state
-    
+
     override fun loadState(state: State) {
         XmlSerializerUtil.copyBean(state, this.state)
     }
-    
+
     /**
      * Whether to highlight trailing spaces in the currently edited line
      */
@@ -60,7 +60,7 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
         set(value) {
             state.trimOnSave = value
         }
-    
+
     /**
      * Custom highlight color in HEX format
      */
@@ -69,11 +69,11 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
         set(value) {
             state.highlightColor = value
         }
-    
+
     companion object {
         @JvmStatic
         fun getInstance(): TrailingSpacesSettings {
             return ApplicationManager.getApplication().getService(TrailingSpacesSettings::class.java)
         }
     }
-} 
+}

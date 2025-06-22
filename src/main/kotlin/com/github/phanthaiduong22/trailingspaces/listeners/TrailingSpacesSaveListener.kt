@@ -10,11 +10,11 @@ class TrailingSpacesSaveListener(
     private val project: Project,
     private val activity: TrailingSpacesActivity
 ) : FileDocumentManagerListener {
-    
+
     override fun beforeDocumentSaving(document: Document) {
         val settings = TrailingSpacesSettings.getInstance()
         if (settings.trimOnSave) {
             activity.deleteTrailingSpaces(document, project.name)
         }
     }
-} 
+}

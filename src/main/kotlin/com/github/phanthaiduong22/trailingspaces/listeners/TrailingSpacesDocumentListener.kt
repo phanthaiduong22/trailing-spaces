@@ -13,7 +13,7 @@ class TrailingSpacesDocumentListener(
     private val project: Project,
     private val activity: TrailingSpacesActivity
 ) : DocumentListener {
-    
+
     override fun documentChanged(event: DocumentEvent) {
         val document = event.document
         val file = FileDocumentManager.getInstance().getFile(document)
@@ -33,4 +33,4 @@ class TrailingSpacesDocumentListener(
             thisLogger().debug("Scheduled debounced trailing spaces check for file: ${file.name}")
         }
     }
-} 
+}

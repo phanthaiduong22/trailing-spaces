@@ -16,13 +16,13 @@ import com.intellij.openapi.wm.WindowManager
  * This creates the UI panel that appears in IntelliJ's preferences.
  */
 class TrailingSpacesConfigurable : Configurable {
-    
+
     private var settingsComponent: DialogPanel? = null
     private val settings = TrailingSpacesSettings.getInstance()
     private lateinit var colorField: JTextField
-    
+
     override fun getDisplayName(): String = PluginConfig.PLUGIN_DISPLAY_NAME
-    
+
     override fun createComponent(): JComponent {
         val panel = panel {
             group("Highlighting Options") {
@@ -67,24 +67,24 @@ class TrailingSpacesConfigurable : Configurable {
                 }
             }
         }
-        
+
         settingsComponent = panel
         return panel
     }
-    
+
     override fun isModified(): Boolean {
         return settingsComponent?.isModified() ?: false
     }
-    
+
     override fun apply() {
         settingsComponent?.apply()
     }
-    
+
     override fun reset() {
         settingsComponent?.reset()
     }
-    
+
     override fun disposeUIResources() {
         settingsComponent = null
     }
-} 
+}
