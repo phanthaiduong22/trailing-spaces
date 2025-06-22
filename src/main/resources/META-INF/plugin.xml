@@ -4,8 +4,6 @@
     <name>Trailing Spaces</name>
     <vendor>phanthaiduong22</vendor>
     
-    <plugin-icon icon="/icons/icon.png"/>
-
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
