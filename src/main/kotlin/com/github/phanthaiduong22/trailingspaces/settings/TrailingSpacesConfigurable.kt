@@ -21,6 +21,12 @@ class TrailingSpacesConfigurable : Configurable {
         val panel = panel {
             group("Highlighting Options") {
                 row {
+                    checkBox("Enable highlighting")
+                        .bindSelected(settings::highlightingEnabled)
+                        .comment("When disabled, no trailing spaces will be highlighted in any file. " +
+                                "You can toggle this setting using the 'Toggle Trailing Spaces' action.")
+                }
+                row {
                     checkBox("Highlight current line")
                         .bindSelected(settings::highlightCurrentLine)
                         .comment("When enabled, trailing spaces in the currently edited line will always be highlighted. " +

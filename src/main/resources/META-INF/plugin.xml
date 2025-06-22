@@ -12,15 +12,26 @@
                                 id="com.github.phanthaiduong22.trailingspaces.settings.TrailingSpacesConfigurable" 
                                 displayName="Trailing Spaces"/>
         <applicationService serviceImplementation="com.github.phanthaiduong22.trailingspaces.settings.TrailingSpacesSettings"/>
+        <projectService serviceImplementation="com.github.phanthaiduong22.trailingspaces.startup.TrailingSpacesActivity"/>
     </extensions>
 
     <actions>
-        <action id="trailing-spaces.deleteTrailingSpaces"
-                class="com.github.phanthaiduong22.trailingspaces.actions.DeleteTrailingSpacesAction"
-                text="Trailing Spaces: Delete"
-                description="Delete all trailing spaces in the current document">
+        <group id="TrailingSpacesGroup" text="Trailing Spaces" popup="true">
             <add-to-group group-id="EditMenu" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt shift T"/>
-        </action>
+            
+            <action id="trailing-spaces.toggleHighlighting"
+                    class="com.github.phanthaiduong22.trailingspaces.actions.ToggleTrailingSpacesAction"
+                    text="Toggle Highlighting"
+                    description="Toggle highlighting of trailing spaces">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt shift D"/>
+            </action>
+            
+            <action id="trailing-spaces.deleteTrailingSpaces"
+                    class="com.github.phanthaiduong22.trailingspaces.actions.DeleteTrailingSpacesAction"
+                    text="Delete"
+                    description="Delete all trailing spaces in the current document">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt shift T"/>
+            </action>
+        </group>
     </actions>
 </idea-plugin>

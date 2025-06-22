@@ -2,12 +2,12 @@ package com.github.phanthaiduong22.trailingspaces.startup
 
 import com.github.phanthaiduong22.trailingspaces.config.PluginConfig
 import com.github.phanthaiduong22.trailingspaces.settings.TrailingSpacesSettings
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.HighlighterTargetArea
 import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.editor.markup.TextAttributes
@@ -18,10 +18,10 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.ui.JBColor
 import kotlinx.coroutines.*
-import java.awt.Color
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 
+@Service(Service.Level.PROJECT)
 class TrailingSpacesActivity : ProjectActivity {
     private val trailingSpacePattern = Pattern.compile(PluginConfig.TRAILING_SPACE_PATTERN, PluginConfig.PATTERN_FLAGS)
     private val highlighters = mutableMapOf<Editor, MutableList<RangeHighlighter>>()
@@ -87,13 +87,14 @@ class TrailingSpacesActivity : ProjectActivity {
     private fun debounceHighlighting(editor: Editor) {
         // Cancel existing job for this editor
         debounceJobs[editor]?.cancel()
-        
+
         // Start new debounced job
-        val job = coroutineScope.launch {
-            delay(PluginConfig.HIGHLIGHTING_DEBOUNCE_DELAY_MS)
-            highlightTrailingSpaces(editor)
-        }
-        
+        val job =
+            coroutineScope.launch {
+                delay(PluginConfig.HIGHLIGHTING_DEBOUNCE_DELAY_MS)
+                highlightTrailingSpaces(editor)
+            }
+
         debounceJobs[editor] = job
     }
 
@@ -104,6 +105,10 @@ class TrailingSpacesActivity : ProjectActivity {
         val text = document.text
         val markupModel = editor.markupModel
         val settings = TrailingSpacesSettings.getInstance()
+
+        if (!settings.highlightingEnabled) {
+            return
+        }
 
         val caretModel = editor.caretModel
         val caretOffset = caretModel.offset
@@ -143,7 +148,9 @@ class TrailingSpacesActivity : ProjectActivity {
 
         highlighters[editor] = editorHighlighters
 
-        thisLogger().debug("Added ${editorHighlighters.size} trailing space highlights (highlightCurrentLine: ${settings.highlightCurrentLine})")
+        thisLogger().debug(
+            "Added ${editorHighlighters.size} trailing space highlights (highlightCurrentLine: ${settings.highlightCurrentLine})",
+        )
     }
 
     private fun clearHighlighters(editor: Editor) {
@@ -151,5 +158,9 @@ class TrailingSpacesActivity : ProjectActivity {
             editor.markupModel.removeHighlighter(highlighter)
         }
         highlighters.remove(editor)
+    }
+
+    fun refreshHighlighting(editor: Editor) {
+        highlightTrailingSpaces(editor)
     }
 }

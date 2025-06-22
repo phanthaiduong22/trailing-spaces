@@ -22,7 +22,8 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
     private var state = State()
     
     data class State(
-        var highlightCurrentLine: Boolean = true
+        var highlightCurrentLine: Boolean = true,
+        var highlightingEnabled: Boolean = true
     )
     
     override fun getState(): State = state
@@ -38,6 +39,15 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
         get() = state.highlightCurrentLine
         set(value) {
             state.highlightCurrentLine = value
+        }
+
+    /**
+     * Whether highlighting is globally enabled
+     */
+    var highlightingEnabled: Boolean
+        get() = state.highlightingEnabled
+        set(value) {
+            state.highlightingEnabled = value
         }
     
     companion object {

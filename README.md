@@ -11,6 +11,16 @@ Jetbrains provides a way to automate deletion of trailing spaces in setting. Dep
 
 ## Usage
 
+### Toggle Highlighting
+
+You can toggle highlighting of trailing spaces on and off at any time using:
+
+1. **Menu**: Go to **"Edit / Trailing Spaces / Toggle Highlighting"**
+2. **Keyboard Shortcut**: Use `Alt+Shift+D` to instantly toggle highlighting
+3. **Settings**: Use the "Enable highlighting" checkbox in the plugin settings
+
+The action text dynamically updates to show whether it will "Enable" or "Disable" highlighting based on the current state.
+
 ### Delete
 
 The main feature you gain from using this plugin is that of deleting all trailing spaces in the currently edited document. In order to use this deletion feature, you may either:
@@ -19,7 +29,7 @@ The main feature you gain from using this plugin is that of deleting all trailin
 
 2. **Keyboard Shortcut**: The plugin comes with a default keyboard shortcut `Alt+Shift+T` to delete all trailing spaces at once in the current file!
 
-3. **Menu**: Access the action from the "Edit" menu where "Trailing Spaces: Delete" is available
+3. **Menu**: Access the action from **"Edit / Trailing Spaces / Delete"**
 
 With these options, you can quickly delete all trailing spaces in your current document whenever needed!
 
@@ -29,10 +39,15 @@ Several options are available to customize the plugin's behavior. Those settings
 
 To access the settings: Go to **"File / Settings / Tools / Trailing Spaces"** (or **"Preferences / Tools / Trailing Spaces"** on Mac).
 
+### Enable Highlighting
+**Default: true**
+
+This is the master toggle for all trailing space highlighting. When disabled, no trailing spaces will be highlighted in any file. This setting can also be toggled using the "Toggle Trailing Spaces" action (`Alt+Shift+D`) or via the menu at "Edit / Trailing Spaces / Toggle Highlighting".
+
 ### Highlight Current Line
 **Default: true**
 
 Highlighting of trailing spaces in the currently edited line can be annoying: each time you are about to start a new word, the space you type is matched as trailing spaces. The currently edited line can thus be ignored by disabling this option.
 
-When this setting is disabled, trailing spaces in the line being edited will not be highlighted.
+When this setting is disabled, trailing spaces in the line being edited will not be highlighted (only effective when "Enable Highlighting" is also enabled).
 <!-- Plugin description end -->
