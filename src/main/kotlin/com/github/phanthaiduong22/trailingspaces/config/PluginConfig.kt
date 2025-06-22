@@ -8,7 +8,7 @@ object PluginConfig {
     /**
      * Debounce delay in milliseconds for highlighting updates
      */
-    const val HIGHLIGHTING_DEBOUNCE_DELAY_MS = 200L
+    const val HIGHLIGHTING_DEBOUNCE_DELAY_MS = 100L
     
     /**
      * Regular expression pattern for matching trailing spaces

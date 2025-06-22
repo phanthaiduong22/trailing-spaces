@@ -98,7 +98,6 @@ class TrailingSpacesActivity : ProjectActivity {
     }
 
     private fun highlightTrailingSpaces(editor: Editor) {
-        // Clear existing highlighters for this editor
         clearHighlighters(editor)
 
         val document = editor.document
@@ -106,19 +105,10 @@ class TrailingSpacesActivity : ProjectActivity {
         val markupModel = editor.markupModel
         val settings = TrailingSpacesSettings.getInstance()
 
-        // Get current caret position
         val caretModel = editor.caretModel
         val caretOffset = caretModel.offset
         val caretLine = document.getLineNumber(caretOffset)
-        val lineStartOffset = document.getLineStartOffset(caretLine)
-        val lineEndOffset = document.getLineEndOffset(caretLine)
-        
-        // Check if caret is at the end of the line with trailing spaces
-        val isCaretAtEndWithTrailingSpaces = caretOffset == lineEndOffset && 
-            caretOffset > lineStartOffset &&
-            text.substring(lineStartOffset, lineEndOffset).matches(Regex(".*[ \\t]+"))
 
-        // Create red background attribute for trailing spaces
         val textAttributes =
             TextAttributes().apply {
                 backgroundColor = JBColor.RED
@@ -139,9 +129,6 @@ class TrailingSpacesActivity : ProjectActivity {
                 continue
             }
 
-            // When highlightCurrentLine is true, always highlight (no special current line logic)
-
-            // Add highlighter for trailing spaces
             val highlighter =
                 markupModel.addRangeHighlighter(
                     startOffset,
@@ -154,7 +141,6 @@ class TrailingSpacesActivity : ProjectActivity {
             editorHighlighters.add(highlighter)
         }
 
-        // Store highlighters for this editor
         highlighters[editor] = editorHighlighters
 
         thisLogger().debug("Added ${editorHighlighters.size} trailing space highlights (highlightCurrentLine: ${settings.highlightCurrentLine})")
