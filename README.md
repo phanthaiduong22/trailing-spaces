@@ -1,10 +1,9 @@
-# trailing-spaces
+<!-- Plugin description -->
+# Trailing Spaces
 
 ## Synopsis
 
-<!-- Plugin description -->
 Jetbrains provides a way to automate deletion of trailing spaces in setting. Depending on your settings, it may be more handy to just highlight them and/or delete them by hand, at any time. This plugin provides just that, and a lot of options to fine-tune the way you want to decimate trailing spaces.
-<!-- Plugin description end -->
 
 ## Usage
 
@@ -24,11 +23,12 @@ With these options, you can quickly delete all trailing spaces in your current d
 
 Several options are available to customize the plugin's behavior. Those settings are stored persistently and applied globally to all opened documents.
 
-To access the settings: Go to **"File / Settings / Tools / Trailing Spaces"** (or **"IntelliJ IDEA / Preferences / Tools / Trailing Spaces"** on Mac).
+To access the settings: Go to **"File / Settings / Tools / Trailing Spaces"** (or **"Preferences / Tools / Trailing Spaces"** on Mac).
 
 ### Highlight Current Line
 **Default: true**
 
 Highlighting of trailing spaces in the currently edited line can be annoying: each time you are about to start a new word, the space you type is matched as trailing spaces. The currently edited line can thus be ignored by disabling this option.
 
-When this setting is disabled, trailing spaces in the line being edited will not be highlighted, but they are still internally detected and will be deleted when using the deletion command. If you are editing multiple lines (using multiple cursors), all such lines will be ignored.
+When this setting is disabled, trailing spaces in the line being edited will not be highlighted.
+<!-- Plugin description end -->
