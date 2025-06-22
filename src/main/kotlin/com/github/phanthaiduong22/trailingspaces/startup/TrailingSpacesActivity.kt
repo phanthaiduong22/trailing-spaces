@@ -22,6 +22,7 @@ import com.intellij.ui.JBColor
 import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
+import java.awt.Color
 
 @Service(Service.Level.PROJECT)
 class TrailingSpacesActivity : ProjectActivity {
@@ -76,7 +77,7 @@ class TrailingSpacesActivity : ProjectActivity {
 
         val textAttributes =
             TextAttributes().apply {
-                backgroundColor = JBColor.RED
+                backgroundColor = parseHexColor(settings.highlightColor)
                 foregroundColor = JBColor.WHITE
             }
 
@@ -160,5 +161,15 @@ class TrailingSpacesActivity : ProjectActivity {
         
         val deletedCount = replacements.size
         thisLogger().info("Deleted $deletedCount trailing space occurrences on save in project: $projectName")
+    }
+    
+    private fun parseHexColor(hexColor: String): Color {
+        return try {
+            val hex = if (hexColor.startsWith("#")) hexColor.substring(1) else hexColor
+            Color.decode("#$hex")
+        } catch (e: NumberFormatException) {
+            thisLogger().warn("Invalid hex color format: $hexColor, falling back to red")
+            Color.RED
+        }
     }
 }

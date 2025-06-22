@@ -24,7 +24,8 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
     data class State(
         var highlightCurrentLine: Boolean = true,
         var highlightingEnabled: Boolean = true,
-        var trimOnSave: Boolean = false
+        var trimOnSave: Boolean = false,
+        var highlightColor: String = PluginConfig.DEFAULT_HIGHLIGHT_COLOR
     )
     
     override fun getState(): State = state
@@ -58,6 +59,15 @@ class TrailingSpacesSettings : PersistentStateComponent<TrailingSpacesSettings.S
         get() = state.trimOnSave
         set(value) {
             state.trimOnSave = value
+        }
+    
+    /**
+     * Custom highlight color in HEX format
+     */
+    var highlightColor: String
+        get() = state.highlightColor
+        set(value) {
+            state.highlightColor = value
         }
     
     companion object {

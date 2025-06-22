@@ -14,6 +14,11 @@ All notable changes to the Trailing Spaces plugin will be documented in this fil
   - Available via Command Palette (`Ctrl+Shift+A` / `Cmd+Shift+A`) - search "Trailing Spaces: Delete"
   - Available via Edit → Trailing Spaces → Delete menu
   - Default keyboard shortcut: `Alt+Shift+T`
+- **Custom highlight color support**
+  - Choose any color for highlighting trailing spaces using HEX format (e.g., #FF0000)
+  - Color picker dialog for visual color selection
+  - Direct HEX input field for precise color specification
+  - Default color: Red (#FF0000)
 - **Persistent settings**
   - Located at File → Settings → Tools → Trailing Spaces (Windows/Linux)
   - Located at Preferences → Tools → Trailing Spaces (Mac)

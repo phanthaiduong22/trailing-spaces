@@ -34,4 +34,9 @@ object PluginConfig {
      * Plugin display name
      */
     const val PLUGIN_DISPLAY_NAME = "Trailing Spaces"
+    
+    /**
+     * Default highlight color in HEX format
+     */
+    const val DEFAULT_HIGHLIGHT_COLOR = "#FF0000"
 } 
