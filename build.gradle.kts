@@ -22,7 +22,6 @@ kotlin {
 // Configure project's dependencies
 repositories {
     mavenCentral()
-    maven { url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies") }
 
     // IntelliJ Platform Gradle Plugin Repositories Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-repositories-extension.html
     intellijPlatform {
@@ -33,9 +32,7 @@ repositories {
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
     testImplementation(libs.junit)
-    testImplementation(libs.junit5)
     testImplementation(libs.opentest4j)
-    testImplementation(libs.intellijUiTestRobot)
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
@@ -134,10 +131,6 @@ tasks {
 
     publishPlugin {
         dependsOn(patchChangelog)
-    }
-    
-    test {
-        useJUnitPlatform()
     }
 }
 
